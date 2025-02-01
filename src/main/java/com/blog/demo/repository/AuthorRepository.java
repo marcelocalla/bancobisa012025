@@ -23,7 +23,7 @@ public class AuthorRepository {
 
     public Author findById(Long id) {
         for (int i = 0; i < listAuthor.size(); i++) {
-            if (listAuthor.get(i).getId() == (id)) {
+            if (listAuthor.get(i).getId().equals(id)) {
                 return listAuthor.get(i);
             }
         }

@@ -23,6 +23,12 @@ public class BlogController {
     @Autowired
     private BlogService serviceBlog;
 
+    /**
+     * Crea un Blog con la informacion enviada
+     * @param pInput
+     * @return
+     */
+
     @PostMapping(path = "/createBlog", consumes = "application/json")
     public GenericResponse<inputBlogGralDto>   creaBlog(@RequestBody inputBlogGralDto pInput) {
 
@@ -52,6 +58,11 @@ public class BlogController {
         }
         return response;
     }
+
+    /**
+     * Conuslta informacion de Blog
+     * @return
+     */
     @GetMapping(path = "/consultaBlog", consumes = "application/json"  )
     public GenericResponse<List<ConsultaBlogDto>>  consultaBlogs() {
         GenericResponse<List<ConsultaBlogDto>> response = new GenericResponse<>();
@@ -86,6 +97,11 @@ public class BlogController {
         }
         return response;
     }
+    /**
+     * Consulta informacion de un Blog por el id
+     * @param id
+     * @return
+     */
 
     @GetMapping(path = "/consultaBlogByid/{id}", consumes = "application/json"  )
 

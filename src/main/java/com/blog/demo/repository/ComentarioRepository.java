@@ -1,6 +1,6 @@
 package com.blog.demo.repository;
 
-import com.blog.demo.model.Author;
+
 import com.blog.demo.model.ComentarioBlog;
 import org.springframework.stereotype.Repository;
 
@@ -17,13 +17,13 @@ public class ComentarioRepository {
         return pComentario;
     }
 
-    public List<ComentarioBlog> getAllÇoments() {
+    /*public List<ComentarioBlog> getAllÇoments() {
         return lComentario;
-    }
+    }*/
 
-    public ComentarioBlog findById(int id) {
+    public ComentarioBlog findById(Long id) {
         for (int i = 0; i < lComentario.size(); i++) {
-            if (lComentario.get(i).getId() == (id)) {
+            if (lComentario.get(i).getId().equals(id)) {
                 return lComentario.get(i);
             }
         }
@@ -51,4 +51,28 @@ public class ComentarioRepository {
         }
         return lCommet;
     }
+
+
+    public ComentarioBlog update(ComentarioBlog pCom, Long id) {
+        int idx = 0;
+
+        for (int i = 0; i < lComentario.size(); i++) {
+            if (lComentario.get(i).getId().equals(id)) {
+                idx = i;
+                break;
+            }
+        }
+        ComentarioBlog comUpdate = new ComentarioBlog();
+        comUpdate.setId(id);
+        comUpdate.setComentario(pCom.getComentario());
+        comUpdate.setIdBlog(pCom.getIdBlog());
+        comUpdate.setIdAuthor(pCom.getIdAuthor());
+        comUpdate.setPuntuacion(pCom.getPuntuacion());
+        lComentario.set(idx, comUpdate);
+        return comUpdate;
+    }
+
+
+
+
 }

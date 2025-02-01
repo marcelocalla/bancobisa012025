@@ -30,19 +30,54 @@ public class ComentarioService {
         try{
             ComentarioBlog comentario =pCome.getComentario();
             var vBlog =repositoryBlog.findByTitulo(pCome.getTituloBlog());
-            comentario.setIdAuthor(vBlog.getIdAuthor());
-            comentario.setIdBlog(vBlog.getId());
-            var vAuth= repositoryAuthor.findByOthers(pCome.getAuth());
-            if(vAuth != null){
-                comentario.setIdAuthor(vAuth.getId());
+            if(vBlog.isComentarios()){
+                comentario.setIdAuthor(vBlog.getIdAuthor());
+                comentario.setIdBlog(vBlog.getId());
+                var vAuth= repositoryAuthor.findByOthers(pCome.getAuth());
+                if(vAuth != null){
+                    comentario.setIdAuthor(vAuth.getId());
+                }
+                System.out.println(""+ comentario.getIdBlog()+" "+comentario.getIdAuthor());
+                comentario.setId(repository.generateId());
+                System.out.println("json co,mentario :"+gson.toJson(comentario));
+                var vComentario =repository.createComent(comentario);
+                response.setAuth(pCome.getAuth());
+                response.setTituloBlog(pCome.getTituloBlog());
+                response.setComentario(vComentario);
+            }else{
+                throw new ServiceException("No tiene autorizacion para comentar","saveComentarioGral");
             }
-            System.out.println(""+ comentario.getIdBlog()+" "+comentario.getIdAuthor());
-            comentario.setId(repository.generateId());
-            System.out.println("json co,mentario :"+gson.toJson(comentario));
-            var vComentario =repository.createComent(comentario);
-            response.setAuth(pCome.getAuth());
-            response.setTituloBlog(pCome.getTituloBlog());
-            response.setComentario(vComentario);
+        }catch(Exception e){
+            throw new ServiceException(e.getMessage(),"saveComentarioGral");
+        }
+        return response;
+    }
+
+    public inputComentarioDto updateComentarioGral(inputComentarioDto pCome, Long id) throws ServiceException {
+        inputComentarioDto response = new inputComentarioDto();
+        Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+
+        try{
+            ComentarioBlog comentario =pCome.getComentario();
+            var vBlog =repositoryBlog.findByTitulo(pCome.getTituloBlog());
+            if(vBlog.isComentarios()){
+                comentario.setIdAuthor(vBlog.getIdAuthor());
+                comentario.setIdBlog(vBlog.getId());
+                var vAuth= repositoryAuthor.findByOthers(pCome.getAuth());
+                if(vAuth != null){
+                    comentario.setIdAuthor(vAuth.getId());
+                }
+                System.out.println(""+ comentario.getIdBlog()+" "+comentario.getIdAuthor());
+                comentario.setId(repository.generateId());
+                System.out.println("json co,mentario :"+gson.toJson(comentario));
+                var vComentario =repository.update(comentario, id);
+                response.setAuth(pCome.getAuth());
+                response.setTituloBlog(pCome.getTituloBlog());
+                response.setComentario(vComentario);
+
+            }else{
+                throw new ServiceException("No tiene autorizacion para comentar","saveComentarioGral");
+            }
         }catch(Exception e){
             throw new ServiceException("saveComentarioGral",e.getMessage());
         }
