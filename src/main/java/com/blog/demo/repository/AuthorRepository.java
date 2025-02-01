@@ -1,6 +1,7 @@
-package com.blog.demo.autor.repository;
+package com.blog.demo.repository;
 
-import com.blog.demo.autor.model.Author;
+import com.blog.demo.model.Author;
+import com.blog.demo.model.inputDto.buscaAuthorDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -14,11 +15,6 @@ public class AuthorRepository {
     public Author createAuthor(Author pAuth) {
         listAuthor.add(pAuth);
         return pAuth;
-//        list = List.of(
-//                new Product(1, "product 1", 10, 1000),
-//                new Product(2, "product 2", 20, 2000),
-//                new Product(3, "product 3", 30, 3000)
-//        );
     }
 
     public List<Author> getAllAuthores() {
@@ -65,5 +61,19 @@ public class AuthorRepository {
         listAuthor.set(idx, authorUpdate);
         return authorUpdate;
     }
+
+    public Author findByOthers(buscaAuthorDto pBusca) {
+        for (int i = 0; i < listAuthor.size(); i++) {
+            if (listAuthor.get(i).getNombres().equals(pBusca.getNombres()) &&
+                    listAuthor.get(i).getCorreo().equals(pBusca.getCorreo()) &&
+                    listAuthor.get(i).getPaisResidencia().equals(pBusca.getPaisResidencia())
+            )
+            {
+                return listAuthor.get(i);
+            }
+        }
+        return null;
+    }
+
 
 }

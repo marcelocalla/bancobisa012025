@@ -1,4 +1,4 @@
-package com.blog.demo.autor.model;
+package com.blog.demo.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +17,7 @@ public class Author {
     private Date fechaNacimiento;
     private String paisResidencia;
     private String correo;
+    //private Date fechaRegistro;
 
     public Author() {
     }

@@ -1,8 +1,8 @@
-package com.blog.demo.autor.Controller;
+package com.blog.demo.Controller;
 
-import com.blog.demo.autor.model.Author;
-import com.blog.demo.autor.repository.AuthorRepository;
-import com.blog.demo.autor.services.AuthorService;
+import com.blog.demo.model.Author;
+import com.blog.demo.services.AuthorService;
+import com.blog.demo.util.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,26 +16,26 @@ public class AuthorController {
 
     @PostMapping
     public Author addAuthor(@RequestBody Author pAuth) {
-        return service.saveProduct(pAuth);
+        return service.saveAuthor(pAuth);
     }
 
     @GetMapping
-    public List<Author> findAllAuthor() {
-        return service.getProducts();
+    public GenericResponse<List<Author>> findAllAuthor() {
+        return service.getAuthors();
     }
 
     @GetMapping("{id}")
     public Author findAuthorById(@PathVariable int id) {
-        return service.getProductById(id);
+        return service.getAuthorById(id);
     }
 
     @PutMapping
     public Author updateAuthor(@RequestBody Author product) {
-        return service.updateProduct(product);
+        return service.updateAuthor(product);
     }
 
     @DeleteMapping("{id}")
     public String deleteAuthor(@PathVariable Long id) {
-        return service.deleteProduct(id);
+        return service.deleteAuthor(id);
     }
 }
