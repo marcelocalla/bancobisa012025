@@ -41,7 +41,7 @@ public class AuthorService {
         return response;
     }
 
-    public Author getAuthorById(int id) {
+    public Author getAuthorById(long id) {
         return repository.findById(id);
     }
 

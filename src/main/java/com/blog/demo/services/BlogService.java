@@ -3,8 +3,10 @@ package com.blog.demo.services;
 import com.blog.demo.model.Author;
 import com.blog.demo.model.Blog;
 import com.blog.demo.model.inputDto.inputBlogGralDto;
+import com.blog.demo.model.outDto.ConsultaBlogDto;
 import com.blog.demo.repository.AuthorRepository;
 import com.blog.demo.repository.BlogRepository;
+import com.blog.demo.repository.ComentarioRepository;
 import com.blog.demo.util.GenericResponse;
 import com.blog.demo.util.MensajeServices;
 import com.blog.demo.util.ServiceException;
@@ -21,6 +23,9 @@ public class BlogService {
 
     @Autowired
     private AuthorRepository repositoryAuthor;
+
+    @Autowired
+    private ComentarioRepository repositoryComent;
 
     public Blog saveBlog(Blog pBlog) throws ServiceException {
         pBlog.setId(this.generaId());
@@ -48,7 +53,7 @@ public class BlogService {
         return response;
     }
 
-    public Blog getBlogById(int id) {
+    public Blog getBlogById(Long id) {
         return repository.findById(id);
     }
 
@@ -67,11 +72,11 @@ public class BlogService {
 
     public inputBlogGralDto saveBlogGral(inputBlogGralDto pBlogG) throws ServiceException {
         inputBlogGralDto response = new inputBlogGralDto();
-        Long  idAuthor= 0L;
+        Long idAuthor = 0L;
         try {
             Blog vblog = pBlogG.getBlog();
             idAuthor = this.generaId();
-            vblog.setId(this.generaId()+1);
+            vblog.setId(this.generaId() + 1);
             vblog.setIdAuthor(idAuthor);
             Author vAut = pBlogG.getAuthor();
             vAut.setId(idAuthor);
@@ -85,5 +90,40 @@ public class BlogService {
         return response;
     }
 
+    public ConsultaBlogDto consultaBlogGralById(Long pId) throws ServiceException {
+        try {
+            return this.setValueLog(pId);
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage(), "consultaBlogGralById");
+        }
+    }
 
+    private  ConsultaBlogDto setValueLog(Long pId) throws ServiceException{
+        ConsultaBlogDto consulta = new ConsultaBlogDto();
+        try {
+            var vblog = repository.findById(pId);
+            if(vblog == null){
+                throw new ServiceException("No existe informacion con ese id ", "consultaBlogGralById");
+            }
+            consulta.setBlog(vblog);
+            var vAuth = repositoryAuthor.findById(vblog.getIdAuthor());
+            consulta.setAuthor(vAuth);
+            consulta.setlComent(repositoryComent.findComentByIdBlog(pId));
+            return consulta;
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage(), "consultaBlogGralById");
+        }
+    }
+    public List<ConsultaBlogDto> consultaBlogGral() throws ServiceException {
+        List<ConsultaBlogDto> lConsultaBlogDto = new ArrayList<>();
+        try {
+            List<Blog> lBlog=  repository.getAlllBlogs();
+            for (Blog b:lBlog){
+                lConsultaBlogDto.add(this.setValueLog(b.getId()));
+            }
+            return lConsultaBlogDto;
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage(), "consultaBlogGralById");
+        }
+    }
 }

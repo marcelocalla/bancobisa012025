@@ -42,4 +42,13 @@ public class ComentarioRepository {
         return System.currentTimeMillis();
     }
 
+    public List<ComentarioBlog> findComentByIdBlog(Long id) {
+        List<ComentarioBlog> lCommet = new ArrayList<>();
+        for (int i = 0; i < lComentario.size(); i++) {
+            if (lComentario.get(i).getIdBlog().equals(id)) {
+                lCommet.add(lComentario.get(i));
+            }
+        }
+        return lCommet;
+    }
 }

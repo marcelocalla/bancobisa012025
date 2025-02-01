@@ -26,9 +26,11 @@ public class BlogRepository {
         return listBlog;
     }
 
-    public Blog findById(int id) {
+    public Blog findById(Long id) {
+        System.out.println("findById::"+id);
         for (int i = 0; i < listBlog.size(); i++) {
-            if (listBlog.get(i).getId() == (id)) {
+            System.out.println(""+listBlog.get(i).getId());
+            if (listBlog.get(i).getId().equals(id)) {
                 return listBlog.get(i);
             }
         }

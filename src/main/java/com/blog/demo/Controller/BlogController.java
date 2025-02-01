@@ -1,15 +1,14 @@
 package com.blog.demo.Controller;
 
 import com.blog.demo.model.inputDto.inputBlogGralDto;
+import com.blog.demo.model.outDto.ConsultaBlogDto;
 import com.blog.demo.services.AuthorService;
 import com.blog.demo.services.BlogService;
 import com.blog.demo.util.GenericResponse;
 import com.blog.demo.util.MensajeServices;
+import com.blog.demo.util.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +52,78 @@ public class BlogController {
         }
         return response;
     }
+    @GetMapping(path = "/consultaBlog", consumes = "application/json"  )
+    public GenericResponse<List<ConsultaBlogDto>>  consultaBlogs() {
+        GenericResponse<List<ConsultaBlogDto>> response = new GenericResponse<>();
+        MensajeServices msg= new MensajeServices();
+        List<MensajeServices> lMens = new ArrayList<>();
+        List<ConsultaBlogDto> resp =  new ArrayList<>();
+        try{
+            resp = serviceBlog.consultaBlogGral();
+            if(resp != null){
+                response.setSuccess(Boolean.TRUE);
+                msg.setCodigo(200);
+                msg.setDescripcion("Se encontro datos");
+                response.setData(resp);
+                lMens.add(msg);
+                response.setMensajes(lMens);
+            }else{
+                response.setData(null);
+                response.setSuccess(Boolean.FALSE);
+                msg.setCodigo(401);
+                msg.setDescripcion("No se encontro datos");
+                lMens.add(msg);
+                response.setMensajes(lMens);
+            }
+            return response;
+        }catch(ServiceException e){
+            response.setData(null);
+            response.setSuccess(Boolean.FALSE);
+            msg.setCodigo(401);
+            msg.setDescripcion(e.getMessage());
+            lMens.add(msg);
+            response.setMensajes(lMens);
+        }
+        return response;
+    }
+
+    @GetMapping(path = "/consultaBlogByid/{id}", consumes = "application/json"  )
+
+    public GenericResponse<List<ConsultaBlogDto>>  consultaBlogsById(@PathVariable(name="id") Long id) {
+        GenericResponse<List<ConsultaBlogDto>> response = new GenericResponse<>();
+        MensajeServices msg= new MensajeServices();
+        List<MensajeServices> lMens = new ArrayList<>();
+        List<ConsultaBlogDto> resp =  new ArrayList<>();
+        try{
+            ConsultaBlogDto resp1 = serviceBlog.consultaBlogGralById(id);
+            resp.add(resp1);
+            if(resp != null){
+                response.setSuccess(Boolean.TRUE);
+                msg.setCodigo(200);
+                msg.setDescripcion("Se encontro datos");
+                response.setData(resp);
+                lMens.add(msg);
+                response.setMensajes(lMens);
+            }else{
+                response.setData(null);
+                response.setSuccess(Boolean.FALSE);
+                msg.setCodigo(401);
+                msg.setDescripcion("No se encontro datos");
+                lMens.add(msg);
+                response.setMensajes(lMens);
+            }
+            return response;
+        }catch(ServiceException e){
+            response.setData(null);
+            response.setSuccess(Boolean.FALSE);
+            msg.setCodigo(401);
+            msg.setDescripcion(e.getMessage());
+            lMens.add(msg);
+            response.setMensajes(lMens);
+        }
+        return response;
+    }
+
 
 
 }

@@ -21,7 +21,7 @@ public class AuthorRepository {
         return listAuthor;
     }
 
-    public Author findById(int id) {
+    public Author findById(Long id) {
         for (int i = 0; i < listAuthor.size(); i++) {
             if (listAuthor.get(i).getId() == (id)) {
                 return listAuthor.get(i);
